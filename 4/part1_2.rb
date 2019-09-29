@@ -22,8 +22,12 @@ class Guard
         @sleeping.sum
     end
 
-    def max_sleep
+    def max_minute
         @sleeping.each_with_index.max_by {|e, i| e}[1]
+    end
+
+    def max_sleep
+        @sleeping[max_minute]
     end
 end
 
@@ -87,6 +91,8 @@ File.foreach("input.txt")
         end
     }
 
-chosen = $guards.max_by { |id, guard| guard.total_sleep }[1]
+chosen1 = $guards.values.max_by { |guard| guard.total_sleep }
+puts "Strategy 1: chosen id #{chosen1.id}, minute #{chosen1.max_minute}, product = #{chosen1.id * chosen1.max_minute}"
 
-puts "Chosen id #{chosen.id}, minute #{chosen.max_sleep}, product = #{chosen.id * chosen.max_sleep}"
+chosen2 = $guards.values.max_by {|guard| guard.max_sleep }
+puts "Strategy 2: chosen id #{chosen2.id}, minute #{chosen2.max_minute}, product = #{chosen2.id * chosen2.max_minute}"
