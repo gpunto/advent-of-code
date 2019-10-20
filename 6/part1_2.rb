@@ -21,6 +21,10 @@ class Point
         min_dists[0]._2 unless min_dists[0]._1 == min_dists[1]._1
     end
 
+    def total_dist_from(points)
+        points.sum { |p| dist(p) }
+    end
+
     def inspect
         "(#{@x}, #{@y})"
     end
@@ -60,20 +64,34 @@ def contains_edges?(cell_and_nearest_list, board_size)
     }
 end
 
+def board_cells(board_size)
+    (0...board_size.x * board_size.y)
+        .map { |l| to_point(l, board_size.y) }
+end
+
+def part1(points, board_size)
+    p board_cells(board_size)
+        .map { |cell|
+            nearest = cell.at_min_dist?(points)
+            Tuple.new(cell, nearest)
+        }
+        .select { |c_n| c_n._2 != nil }
+        .group_by { |c_n| c_n._2 }
+        .select { |_, c_n_list| !contains_edges?(c_n_list, board_size) }
+        .map { |c_n, c_n_list| [c_n, c_n_list.size] }
+        .sort_by { |pair| pair[1] }
+        .last[1]
+end
+
+def part2(points, board_size)
+    board_cells(board_size)
+        .select { |cell| cell.total_dist_from(points) < 10000 }
+        .size
+end
+
 points = File.foreach("input.txt")
     .map { |line| parse_point(line) }
 
 board_size = board_size(points)
 
-p (0...board_size.x * board_size.y)
-    .map { |l|
-        cell = to_point(l, board_size.y)
-        nearest = cell.at_min_dist?(points)
-        Tuple.new(cell, nearest)
-    }
-    .select { |c_n| c_n._2 != nil }
-    .group_by { |c_n| c_n._2 }
-    .select { |_, c_n_list| !contains_edges?(c_n_list, board_size) }
-    .map { |c_n, c_n_list| [c_n, c_n_list.size] }
-    .sort_by { |pair| pair[1] }
-    .reverse
+p part2(points, board_size)

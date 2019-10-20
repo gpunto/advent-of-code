@@ -91,8 +91,8 @@ File.foreach("input.txt")
         end
     }
 
-chosen1 = $guards.values.max_by { |guard| guard.total_sleep }
+chosen1 = $guards.values.max_by(&:total_sleep)
 puts "Strategy 1: chosen id #{chosen1.id}, minute #{chosen1.max_minute}, product = #{chosen1.id * chosen1.max_minute}"
 
-chosen2 = $guards.values.max_by {|guard| guard.max_sleep }
+chosen2 = $guards.values.max_by(&:max_sleep)
 puts "Strategy 2: chosen id #{chosen2.id}, minute #{chosen2.max_minute}, product = #{chosen2.id * chosen2.max_minute}"
