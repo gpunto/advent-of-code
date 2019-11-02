@@ -1,9 +1,11 @@
+require_relative "./doubly_linked_list"
+
 class Board
-  attr :circle, :current
+  attr :circle
 
   def initialize()
-    @circle = [0]
-    @current = 0
+    @circle = DoublyLinkedList.new
+    @circle.insert(0)
   end
 
   def put(num)
@@ -15,21 +17,15 @@ class Board
   end
 
   def put_regular(num)
-    @current = ((@current + 1) % @circle.size) + 1
-    @circle.insert(@current, num)
-    return 0
+    @circle.move_next
+    @circle.insert(num)
+    0
   end
 
   def put_23(num)
-    @current = @current - 7
-    @current = @circle.size + @current if @current < 0
-    removed = @circle.delete_at(@current)
-    return num + removed
-  end
-
-  def inspect
-    arr = @circle.join(", ")
-    "(#{@circle[@current]}) - #{arr}"
+    @circle.move(-7)
+    removed = @circle.remove
+    num + removed
   end
 end
 
@@ -45,7 +41,7 @@ last_marble = specs[1]
 board = Board.new
 scores = Array.new(players) { 0 }
 
-for i in 1..last_marble
+for i in 1..last_marble * 100
   player = i % players
   worth = board.put(i)
   scores[player] += worth
