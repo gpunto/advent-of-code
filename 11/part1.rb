@@ -50,3 +50,6 @@ grid = build_grid(grid_size, serial_number)
 
 # Part 1
 p solve(grid, serial_number, 3)
+
+# Part 2
+# O(n^5) not feasible with this algorithm
