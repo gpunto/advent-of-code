@@ -1,4 +1,5 @@
 import Data.Array.IArray
+import Common (parseCSLine)
 
 newtype Lanternfish = Lanternfish Int deriving (Show, Eq)
 
@@ -26,16 +27,13 @@ splitOn d = loop []
       let (before, after) = span (/= d) l
        in loop (before : acc) (drop 1 after)
 
-parseIntList :: String -> [Int]
-parseIntList = map read . splitOn ','
-
 solveNaive :: Int -> FilePath -> IO ()
 solveNaive days filename =
   print
     . length
     . agePopulation days
     . map Lanternfish
-    . parseIntList
+    . parseCSLine
     =<< readFile filename
 
 emptyPopulation :: Population
@@ -61,5 +59,5 @@ solve days filename =
     . sum
     . nTimes days age
     . loadPopulation
-    . parseIntList
+    . parseCSLine
     =<< readFile filename
