@@ -1,4 +1,4 @@
-module Common where 
+module Common where
 
 splitOn :: Eq a => a -> [a] -> [[a]]
 splitOn d = loop []
