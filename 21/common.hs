@@ -10,3 +10,6 @@ splitOn d = loop []
 
 parseCSLine :: Read a => String -> [a]
 parseCSLine = map read . splitOn ','
+
+solveFile :: Show a => (String -> a) -> FilePath -> IO ()
+solveFile solve filename = print . solve =<< readFile filename
