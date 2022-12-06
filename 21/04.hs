@@ -1,3 +1,4 @@
+import Common (chunksOf)
 import Data.List (transpose)
 
 type Board = [[Cell]]
@@ -30,14 +31,6 @@ unmarkedSum :: Board -> Int
 unmarkedSum = sum . map (sum . map value)
   where
     value (Cell n m) = if m then 0 else n
-
-chunksOf :: Int -> [a] -> [[a]]
-chunksOf n = loop []
-  where
-    loop acc [] = reverse acc
-    loop acc l =
-      let (h, t) = splitAt n l
-       in loop (h : acc) t
 
 parseBoards :: [String] -> [Board]
 parseBoards = chunksOf 5 . chunksOf 5 . map ((`Cell` False) . read) . concatMap words
